@@ -1,0 +1,5 @@
+torch>=2.0.0
+datasets
+accelerate
+numpy
+transformers>=4.56.0
