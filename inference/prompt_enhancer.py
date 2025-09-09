@@ -1,3 +1,8 @@
+"""
+Copyright (c) 2025 Tencent. All Rights Reserved.
+Licensed under the Tencent Hunyuan Community License Agreement.
+"""
+
 import re
 import time
 import logging

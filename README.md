@@ -1,24 +1,26 @@
+<div align="center">
+
 # PromptEnhancer: A Simple Approach to Enhance Text-to-Image Models via Chain-of-Thought Prompt Rewriting
 
+</div>
+
 <p align="center">
-  <a href="https://www.arxiv.org/abs/2509.04545"><img src="https://img.shields.io/badge/Paper-arXiv:2509.04545-red?logo=arxiv" alt="arXiv"></a>
+  <!-- <a href="https://www.arxiv.org/abs/2509.04545"><img src="https://img.shields.io/badge/Paper-arXiv:2509.04545-red?logo=arxiv" alt="arXiv"></a> -->
   <a href="https://huggingface.co/tencent/HunyuanImage-2.1/tree/main/reprompt"><img src="https://img.shields.io/badge/HuggingFace-Model_V1-blue?logo=huggingface" alt="HuggingFace Model"></a>
   <a href="https://hunyuan-promptenhancer.github.io/"><img src="https://img.shields.io/badge/Homepage-PromptEnhancer-1abc9c" alt="Homepage"></a>
-</p>
-<p align="center">
-  <a href="https://hunyuan-image2.1.github.io/"><img src="https://img.shields.io/badge/Homepage-HunyuanImage2.1-1abc9c" alt="HunyuanImage2.1 Homepage"></a>
   <a href="https://github.com/Tencent-Hunyuan/HunyuanImage-2.1"><img src="https://img.shields.io/badge/Code-HunyuanImage2.1-2ecc71?logo=github" alt="HunyuanImage2.1 Code"></a>
   <a href="https://huggingface.co/tencent/HunyuanImage-2.1"><img src="https://img.shields.io/badge/Model-HunyuanImage2.1-3498db?logo=huggingface" alt="HunyuanImage2.1 Model"></a>
-</p>
-<p align="center">
+  <a href=https://x.com/TencentHunyuan target="_blank"><img src=https://img.shields.io/badge/Hunyuan-black.svg?logo=x height=22px></a>
   <img src="https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white" alt="Python">
   <img src="https://img.shields.io/badge/Transformers-4.56%2B-FFD21E?logo=huggingface" alt="Transformers">
   <img src="https://img.shields.io/badge/PyTorch-2.0%2B-EE4C2C?logo=pytorch&logoColor=white" alt="PyTorch">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache--2.0-blue" alt="License"></a>
 </p>
 
+---
+
 <p align="center">
-  <img src="assets/teaser-1.png" alt="PromptEnhancer Teaser" width="900" />
+  <img src="assets/teaser-1.png" alt="PromptEnhancer Teaser"/>
 </p>
 
 ## Overview
@@ -84,6 +86,10 @@ print("Enhanced:", new_prompt)
 ## License
 
 This project is distributed under the terms specified in `LICENSE`.
+
+## Acknowledgements
+
+We would like to thank the following open-source projects and communities for their contributions to open research and exploration: [Qwen](https://huggingface.co/Qwen), [HuggingFace](https://huggingface.co).
 
 ## Contact
 
