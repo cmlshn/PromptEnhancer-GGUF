@@ -89,7 +89,7 @@ This project is distributed under the terms specified in `LICENSE`.
 
 ## Acknowledgements
 
-We would like to thank the following open-source projects and communities for their contributions to open research and exploration: [Qwen](https://huggingface.co/Qwen), [HuggingFace](https://huggingface.co).
+We would like to thank the following open-source projects and communities for their contributions to open research and exploration: [Transformers](https://huggingface.co/transformers) and [HuggingFace](https://huggingface.co).
 
 ## Contact
 
