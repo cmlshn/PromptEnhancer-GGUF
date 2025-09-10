@@ -9,6 +9,7 @@ Zhiyuan Zhao ·
 [**Jiale Tao**](https://scholar.google.com/citations?user=WF5DPWkAAAAJ&hl=en) · 
 [**QiXun Wang**](https://github.com/wangqixun) · 
 [**Ruihuang Li**](https://scholar.google.com/citations?user=8CfyOtQAAAAJ&hl=en) · 
+Comi Chen ·
 Xin Li · 
 [**Mingrui Wu**](https://scholar.google.com/citations?user=sbCKwnYAAAAJ&hl=en) · 
 Xinchi Deng · 
@@ -103,6 +104,18 @@ print("Enhanced:", new_prompt)
 ## License
 
 This project is distributed under the terms specified in `LICENSE`.
+
+## Citation
+
+If you find this project useful, please consider citing:
+```bibtex
+@article{promptenhancer,
+  title={PromptEnhancer: A Simple Approach to Enhance Text-to-Image Models via Chain-of-Thought Prompt Rewriting},
+  author={Wang, Linqing and Xing, Ximing and Cheng, Yiji and Zhao, Zhiyuan and Tao, Jiale and Wang, QiXun and Li, Ruihuang and Chen, Comi and Li, Xin and Wu, Mingrui and Deng, Xinchi and Wang, Chunyu and Lu, Qinglin},
+  journal={arXiv preprint arXiv:2509.04545},
+  year={2025}
+}
+```
 
 ## Acknowledgements
 
