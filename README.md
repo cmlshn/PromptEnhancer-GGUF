@@ -26,6 +26,7 @@ Tencent Hunyuan
   <a href="https://www.arxiv.org/abs/2509.04545"><img src="https://img.shields.io/badge/Paper-arXiv:2509.04545-red?logo=arxiv" alt="arXiv"></a>
   <a href="https://zhuanlan.zhihu.com/p/1949013083109459515"><img src="https://img.shields.io/badge/知乎-技术解读-0084ff?logo=zhihu" alt="Zhihu"></a>
   <a href="https://huggingface.co/tencent/HunyuanImage-2.1/tree/main/reprompt"><img src="https://img.shields.io/badge/Model-PromptEnhancer_7B-blue?logo=huggingface" alt="HuggingFace Model"></a>
+  <a href="https://huggingface.co/datasets/PromptEnhancer/T2I-Keypoints-Eval"><img src="https://img.shields.io/badge/Benchmark-T2I_Keypoints_Eval-blue?logo=huggingface" alt="T2I-Keypoints-Eval Dataset"></a>
   <a href="https://hunyuan-promptenhancer.github.io/"><img src="https://img.shields.io/badge/Homepage-PromptEnhancer-1abc9c?logo=homeassistant&logoColor=white" alt="Homepage"></a>
   <a href="https://github.com/Tencent-Hunyuan/HunyuanImage-2.1"><img src="https://img.shields.io/badge/Code-HunyuanImage2.1-2ecc71?logo=github" alt="HunyuanImage2.1 Code"></a>
   <a href="https://huggingface.co/tencent/HunyuanImage-2.1"><img src="https://img.shields.io/badge/Model-HunyuanImage2.1-3498db?logo=huggingface" alt="HunyuanImage2.1 Model"></a>
@@ -43,12 +44,18 @@ Tencent Hunyuan
 
 ## Overview
 
-Hunyuan-PromptEnhancer is a prompt rewriting utility built on top of Tencent's Hunyuan models. It restructures an input prompt while preserving the original intent, producing clearer, layered, and logically consistent prompts suitable for downstream image generation or similar tasks.
+Hunyuan-PromptEnhancer is a prompt rewriting utility. It restructures an input prompt while preserving the original intent, producing clearer, layered, and logically consistent prompts suitable for downstream image generation or similar tasks.
 
 - Preserves intent across key elements (subject/action/quantity/style/layout/relations/attributes/text, etc.).
 - Encourages a "global–details–summary" narrative, describing primary elements first, then secondary/background elements, ending with a concise style/type summary.
 - Robust output parsing with graceful fallback: prioritizes `<answer>...</answer>`; if missing, removes `<think>...</think>` and extracts clean text; otherwise falls back to the original input.
 - Configurable inference parameters (temperature, top_p, max_new_tokens) for balancing determinism and diversity.
+
+## Updates
+
+- [2025-09-16] Release [T2I-Keypoints-Eval dataset](https://huggingface.co/datasets/PromptEnhancer/T2I-Keypoints-Eval).
+- [2025-09-07] Release [PromptEnhancerV2-7B model](https://huggingface.co/tencent/HunyuanImage-2.1/tree/main/reprompt).
+- [2025-09-07] Release [technical report](https://arxiv.org/abs/2509.04545).
 
 ## Installation
 
@@ -99,7 +106,8 @@ print("Enhanced:", new_prompt)
 
 ## TODO
 
-- [ ] open source PromptEnhancerV2-32B model
+- [ ] open source AlignEvaluator model.
+- [ ] open source PromptEnhancerV2-32B model.
 
 ## License
 
