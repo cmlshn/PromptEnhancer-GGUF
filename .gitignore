@@ -153,3 +153,7 @@ lightning_logs/*
 
 # Editor settings
 .editorconfig
+
+# Models
+hf_model_card/
+hf_model_card/*
