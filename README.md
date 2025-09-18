@@ -73,7 +73,7 @@ huggingface-cli download PromptEnhancer/PromptEnhancer-32B --local-dir ./models/
 
 ## Quickstart
 
-### Using HunyuanPromptEnhancer (Original Version)
+### Using HunyuanPromptEnhancer
 
 ```python
 from inference.prompt_enhancer import HunyuanPromptEnhancer
@@ -95,7 +95,7 @@ new_prompt = enhancer.predict(
 print("Enhanced:", new_prompt)
 ```
 
-### Using PromptEnhancerV2 (Vision-Language Version)
+### Using PromptEnhancerV2
 
 ```python
 from inference.prompt_enhancer_v2 import PromptEnhancerV2
@@ -129,10 +129,6 @@ print("Enhanced:", new_prompt)
 
 - [ ] open source AlignEvaluator model.
 - [x] open source PromptEnhancer-32B model.
-
-## License
-
-This project is distributed under the terms specified in `LICENSE`.
 
 ## Citation
 
