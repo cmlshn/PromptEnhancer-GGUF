@@ -6,6 +6,8 @@
 [**Ximing Xing**](https://ximinng.github.io/) · 
 [**Yiji Cheng**](https://scholar.google.com/citations?user=Plo8ZSYAAAAJ&hl=en) · 
 Zhiyuan Zhao · 
+Donghao Li ·
+Tiankai Hang ·
 [**Jiale Tao**](https://scholar.google.com/citations?user=WF5DPWkAAAAJ&hl=en) · 
 [**QiXun Wang**](https://github.com/wangqixun) · 
 [**Ruihuang Li**](https://scholar.google.com/citations?user=8CfyOtQAAAAJ&hl=en) · 
@@ -13,6 +15,7 @@ Comi Chen ·
 Xin Li · 
 [**Mingrui Wu**](https://scholar.google.com/citations?user=sbCKwnYAAAAJ&hl=en) · 
 Xinchi Deng · 
+Shuyang Gu · 
 [**Chunyu Wang**](https://scholar.google.com/citations?user=VXQV5xwAAAAJ&hl=en)<sup>†</sup> · 
 [**Qinglin Lu**](https://luqinglin.weebly.com/)<sup>*</sup>
 
