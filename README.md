@@ -53,7 +53,7 @@ Hunyuan-PromptEnhancer is a prompt rewriting utility. It restructures an input p
 - Configurable inference parameters (temperature, top_p, max_new_tokens) for balancing determinism and diversity.
 
 ## 🔥🔥🔥Updates
-
+- [2025-09-18] ✨ Try the [PromptEnhancer-32B](https://huggingface.co/PromptEnhancer/PromptEnhancer-32B) for higher-quality prompt enhancement!
 - [2025-09-16] Release [T2I-Keypoints-Eval dataset](https://huggingface.co/datasets/PromptEnhancer/T2I-Keypoints-Eval).
 - [2025-09-07] Release [PromptEnhancer-7B model](https://huggingface.co/tencent/HunyuanImage-2.1/tree/main/reprompt).
 - [2025-09-07] Release [technical report](https://arxiv.org/abs/2509.04545).
