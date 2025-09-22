@@ -50,10 +50,10 @@ class PromptEnhancerV2:
     def predict(
         self,
         prompt_cot,
-        sys_prompt="你是一位图像生成提示词撰写专家，请根据用户输入的提示词，改写生成新的提示词，改写后的提示词要求：1 改写后提示词包含的主体/动作/数量/风格/布局/关系/属性/文字等 必须和改写前的意图一致； 2 在宏观上遵循"总-分-总"的结构，确保信息的层次清晰；3 客观中立，避免主观臆断和情感评价；4 由主到次，始终先描述最重要的元素，再描述次要和背景元素；5 逻辑清晰，严格遵循空间逻辑或主次逻辑，使读者能在大脑中重建画面；6 结尾点题，必须用一句话总结图像的整体风格或类型。",
+        sys_prompt="请根据用户的输入，生成思考过程的思维链并改写提示词：",
         temperature=0,
         top_p=1.0,
-        max_new_tokens=512,
+        max_new_tokens=2048,
         device="cuda",
     ):
         """
@@ -112,21 +112,14 @@ class PromptEnhancerV2:
                 clean_up_tokenization_spaces=False,
             )
             output_res = output_text[0]
-            # Parse the output to extract the rewritten prompt
-            if output_res.count("think>") == 2:
-                prompt_cot = output_res.split("think>")[-1]
-                if prompt_cot.startswith("\n"):
-                    prompt_cot = prompt_cot[1:]
-            else:
-                # Fallback: use the entire output if think tags are not properly formatted
-                prompt_cot = output_res.strip() if output_res.strip() else org_prompt_cot
-
+            assert output_res.count("think>") == 2
+            prompt_cot = output_res.split("think>")[-1]
+            if prompt_cot.startswith("\n"):
+                prompt_cot = prompt_cot[1:]
             prompt_cot = replace_single_quotes(prompt_cot)
-            self.logger.info("Re-prompting succeeded; using the new prompt")
-
-        except Exception as e:
+        except Exception:
             prompt_cot = org_prompt_cot
-            self.logger.exception("Re-prompting failed; using the original prompt")
+            print("✗ Re-prompting failed, so we are using the original prompt")
 
         return prompt_cot
 
