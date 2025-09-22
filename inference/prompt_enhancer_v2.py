@@ -53,7 +53,7 @@ class PromptEnhancerV2:
         sys_prompt="请根据用户的输入，生成思考过程的思维链并改写提示词：",
         temperature=0,
         top_p=1.0,
-        max_new_tokens=512,
+        max_new_tokens=2048,
         device="cuda",
     ):
         """
@@ -112,21 +112,14 @@ class PromptEnhancerV2:
                 clean_up_tokenization_spaces=False,
             )
             output_res = output_text[0]
-            # Parse the output to extract the rewritten prompt
-            if output_res.count("think>") == 2:
-                prompt_cot = output_res.split("think>")[-1]
-                if prompt_cot.startswith("\n"):
-                    prompt_cot = prompt_cot[1:]
-            else:
-                # Fallback: use the entire output if think tags are not properly formatted
-                prompt_cot = output_res.strip() if output_res.strip() else org_prompt_cot
-
+            assert output_res.count("think>") == 2
+            prompt_cot = output_res.split("think>")[-1]
+            if prompt_cot.startswith("\n"):
+                prompt_cot = prompt_cot[1:]
             prompt_cot = replace_single_quotes(prompt_cot)
-            self.logger.info("Re-prompting succeeded; using the new prompt")
-
-        except Exception as e:
+        except Exception:
             prompt_cot = org_prompt_cot
-            self.logger.exception("Re-prompting failed; using the original prompt")
+            print("✗ Re-prompting failed, so we are using the original prompt")
 
         return prompt_cot
 
