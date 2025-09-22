@@ -1,0 +1,30 @@
+INFO:__main__:Loading GGUF model from: /workspace/PromptEnhancer/models/PromptEnhancer-32B.Q8_0.gguf
+llama_context: n_ctx_per_seq (1024) < n_ctx_train (128000) -- the full capacity of the model will not be utilized
+INFO:__main__:GGUF model loaded successfully
+Model Info: {'n_ctx': 1024, 'n_vocab': 152064, 'model_path': '/workspace/PromptEnhancer/models/PromptEnhancer-32B.Q8_0.gguf'}
+Testing English prompts with GGUF model:
+==================================================
+
+[1/4] User Prompt: woman in jungle
+----------------------------------------
+Enhanced Prompt: A woman is positioned within a dense, lush jungle environment. She has long, dark hair, partially pulled back, with a few strands falling over her face and shoulders. She wears a simple, earth-toned tunic made of a natural, woven fabric that reaches her mid-thighs. Her expression is one of calm observation as she looks slightly off-camera. The woman stands on a path covered in moss and surrounded by a variety of tropical plants, including large, broad-leafed ferns and vibrant green undergrowth. In the middle ground, the path is flanked by taller trees with gnarled bark, and vines hang from the branches above, creating a canopy. The background is a deep, dense wall of foliage, with dappled sunlight filtering through the leaves, casting patterns of light and shadow on the scene. The overall atmosphere is one of serenity and immersion in nature. This image presents a photography style.
+Time cost: 3.93s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+[2/4] User Prompt: sports car in monaco
+----------------------------------------
+Enhanced Prompt: A sleek, modern sports car is positioned on a narrow, cobblestone-paved street in the picturesque city of Monaco. The car, with its glossy, vibrant red paintwork, is the central focus, angled slightly to showcase its aerodynamic design, low-profile body, and large, black alloy wheels. In the background, the street is flanked by tall, elegant buildings with classic Mediterranean architecture, featuring facades of warm stone and shuttered windows. The iconic red-and-white striped awnings of luxury shops and cafes are visible under the bright sunlight. Further down the street, the scene is framed by the azure waters of the Mediterranean Sea, with the distinct silhouette of the Monte Carlo harbour and its yachts on the horizon. The overall atmosphere is one of luxury and high performance, captured on a clear, sunny day. This image presents a high-resolution, professional automotive photography style.
+Time cost: 3.58s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+[3/4] User Prompt: a cat in a room
+----------------------------------------
+Enhanced Prompt: A domestic cat is positioned within a brightly lit room, creating a serene and comfortable atmosphere. The cat, with its sleek, ginger tabby fur, is the central subject, sitting upright on a plush, cream-colored rug. Its green eyes are wide and focused, and its tail is curled neatly around its paws. In the background, a large window with white frames allows natural daylight to flood the space, illuminating dust motes dancing in the air. To the left of the cat, a wooden bookshelf stands against a pale blue wall, filled with books of various colors. On the right, a small potted fiddle-leaf fig plant sits on a wooden floor, its large leaves adding a touch of green. The overall scene is captured in a realistic photography style, emphasizing the soft lighting and the cozy interior setting.
+Time cost: 3.34s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+[4/4] User Prompt: digital art explosion of the colors
+----------------------------------------
+Enhanced Prompt: A vibrant and chaotic explosion of colors dominates the visual field, creating a dynamic and abstract composition. At the center of the frame, a bright, white-hot core serves as the origin point for the blast, from which energetic streaks and bursts of light radiate outwards. These primary bursts are a mix of electric blue, neon pink, and vivid yellow, shooting across the canvas in sharp, jagged lines. Surrounding these main streams, a dense cloud of particles and softer, ethereal wisps of color expands, featuring shades of purple, orange, and green that intermingle and overlap. The background is a dark, cosmic void, which enhances the luminosity of the explosion, with faint, glowing geometric patterns subtly visible behind the main event. The overall presentation is that of a digital art style, characterized by its dynamic motion, vibrant color palette, and abstract forms.
+Time cost: 3.54s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
