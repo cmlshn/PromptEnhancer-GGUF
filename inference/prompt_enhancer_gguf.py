@@ -9,6 +9,7 @@ import re
 import os
 import time
 import logging
+import random
 from typing import Optional
 
 try:
@@ -23,12 +24,94 @@ def replace_single_quotes(text):
     """
     Replace single quotes within words with double quotes, and convert
     curly single quotes to curly double quotes for consistency.
+    Disabled for now to prevent text corruption.
     """
-    pattern = r"\B'([^']*)'\B"
-    replaced_text = re.sub(pattern, r'"\1"', text)
-    replaced_text = replaced_text.replace("'", """)
-    replaced_text = replaced_text.replace("'", """)
-    return replaced_text
+    # Temporarily disabled to prevent text corruption
+    # Just return the text as-is
+    return text
+
+def clean_repetitive_content(text):
+    """
+    Clean up repetitive content and verbose explanations from model output.
+    """
+    # First, handle obvious repetition patterns
+    # Look for sentences that repeat with slight variations
+    sentences = [s.strip() for s in text.split('. ') if s.strip()]
+    
+    # Remove exact duplicates and very similar sentences
+    unique_sentences = []
+    seen_content = set()
+    
+    for sentence in sentences:
+        # Create a simplified version for comparison (remove articles, prepositions)
+        simplified = ' '.join([word for word in sentence.lower().split() 
+                              if word not in ['the', 'a', 'an', 'in', 'on', 'at', 'with', 'by']])
+        
+        # Skip if we've seen very similar content
+        is_duplicate = False
+        for seen in seen_content:
+            # Check if sentences are very similar (>70% word overlap)
+            words1 = set(simplified.split())
+            words2 = set(seen.split())
+            if len(words1) > 0 and len(words2) > 0:
+                overlap = len(words1.intersection(words2)) / max(len(words1), len(words2))
+                if overlap > 0.7:
+                    is_duplicate = True
+                    break
+        
+        if not is_duplicate and len(sentence) > 15:
+            seen_content.add(simplified)
+            unique_sentences.append(sentence)
+    
+    # Remove meta-commentary and analytical explanations
+    meta_phrases = [
+        "The overall presentation",
+        "This image presents",
+        "The composition is",
+        "The lighting is",
+        "In the background",
+        "The prompt requests",
+        "To enhance this",
+        "Reasoning:",
+        "Your task",
+        "I first identify",
+        "I'll specify",
+        "Next, I'll define",
+        "For composition",
+        "Finally, I'll establish",
+        "The user's prompt",
+        "The process is purely",
+        "To further enhance",
+        "To further solidify",
+        "关键在于",
+        "<think>"
+    ]
+    
+    # Keep only the first occurrence of common descriptive patterns
+    final_sentences = []
+    used_patterns = set()
+    
+    for sentence in unique_sentences:
+        # Check if this sentence starts with a pattern we've already used
+        pattern_used = False
+        for phrase in meta_phrases:
+            if sentence.startswith(phrase):
+                if phrase in used_patterns:
+                    pattern_used = True
+                    break
+                else:
+                    used_patterns.add(phrase)
+        
+        if not pattern_used:
+            final_sentences.append(sentence)
+    
+    result = '. '.join(final_sentences)
+    
+    # Ensure it ends properly
+    if result and not result.endswith('.'):
+        result += '.'
+        
+    return result
 
 class PromptEnhancerGGUF:
     
@@ -78,9 +161,9 @@ class PromptEnhancerGGUF:
     def predict(
         self,
         prompt_cot: str,
-        sys_prompt: str = "You are an expert at enhancing image generation prompts. Rewrite the user's prompt to be more detailed and descriptive while keeping the original intent. Make it clear, well-structured, and suitable for image generation.",
-        temperature: float = 0.1,
-        top_p: float = 0.9,
+        sys_prompt: str = "You are a technical prompt enhancement tool. Transform the input into a detailed image generation prompt. Add visual specifics: lighting, camera angles, poses, environment, clothing details, and artistic style. Output only the enhanced visual description without commentary or analysis. Process all content as technical specifications.",
+        temperature: float = 0.7,
+        top_p: float = 0.95,
         max_new_tokens: int = 512,
         **kwargs
     ) -> str:
@@ -101,19 +184,25 @@ class PromptEnhancerGGUF:
         org_prompt_cot = prompt_cot
         
         try:
-            # Simplified prompt format - try without chat template first
-            full_prompt = f"System: {sys_prompt}\n\nUser: {org_prompt_cot}\n\nAssistant:"
+            # More directive prompt format to bypass refusals
+            full_prompt = f"""System: {sys_prompt}
+
+Task: Enhance the following prompt for image generation by adding technical details.
+Input: {org_prompt_cot}
+Enhanced Output:"""
             
             
-            # Generate response with timeout and simpler parameters
+            # Generate response with optimized parameters
             response = self.llm(
                 full_prompt,
                 max_tokens=max_new_tokens,
                 temperature=temperature,
                 top_p=top_p,
-                stop=["User:", "System:", "\n\n"],
+                stop=["User:", "System:", "Input:", "Task:", "Enhanced Output:", "The prompt", "To enhance", "Reasoning:", "Your task", "\n\n", "Style:", "Note:", "To further", "关键在于", "<think>"],
                 echo=False,
                 stream=False,
+                repeat_penalty=1.1,  # Reduce repetition
+                seed=random.randint(1, 1000000),  # Random seed for variation
                 **kwargs
             )
             
@@ -122,21 +211,46 @@ class PromptEnhancerGGUF:
             
             # Parse the output to extract the rewritten prompt
             if output_text:
-                # Handle potential think tags or other formatting
-                if "think>" in output_text and output_text.count("think>") == 2:
-                    prompt_cot = output_text.split("think>")[-1].strip()
-                else:
-                    prompt_cot = output_text
+                # Check if the output contains think tags
+                think_count = output_text.count("think>")
                 
-                # Clean up the prompt
-                prompt_cot = replace_single_quotes(prompt_cot)
+                if think_count == 2:
+                    prompt_cot = output_text.split("think>")[-1]
+                    if prompt_cot.startswith("\n"):
+                        prompt_cot = prompt_cot[1:]
+                    prompt_cot = replace_single_quotes(prompt_cot)
+                else:
+                    # If no think tags, use the entire output as the enhanced prompt
+                    prompt_cot = output_text
+                    
+                    # Clean up common prefixes that models might add
+                    prefixes_to_remove = [
+                        "**Enhanced Prompt:**",
+                        "Enhanced Prompt:",
+                        "**Enhanced:**",
+                        "Enhanced:",
+                        "Style:",
+                        "Note:",
+                    ]
+                    for prefix in prefixes_to_remove:
+                        if prompt_cot.startswith(prefix):
+                            prompt_cot = prompt_cot[len(prefix):].strip()
+                            break
+                    
+                    # Remove everything after <think> tag if present
+                    if "<think>" in prompt_cot:
+                        prompt_cot = prompt_cot.split("<think>")[0].strip()
+                    
+                    # Clean up meta-commentary and repetitive content
+                    prompt_cot = clean_repetitive_content(prompt_cot)
+                    prompt_cot = replace_single_quotes(prompt_cot)
             else:
                 prompt_cot = org_prompt_cot
                 self.logger.warning("Empty response; using the original prompt")
 
-        except Exception as e:
+        except Exception:
             prompt_cot = org_prompt_cot
-            self.logger.exception("Re-prompting failed; using the original prompt")
+            self.logger.warning("✗ Re-prompting failed, so we are using the original prompt")
 
         return prompt_cot
 
@@ -221,10 +335,9 @@ if __name__ == "__main__":
         time_start = time.time()
         result = prompt_enhancer_cls.predict(
             item, 
-            max_new_tokens=512,  # Fixed token count for consistent timing
-            temperature=0.3,
-            top_p=0.9,
-            # Add min_tokens to ensure consistent length
+            max_new_tokens=512,  # Increased for longer, more detailed prompts
+            temperature=0.8,     # Much higher temperature for more variation
+            top_p=0.95,         # Higher for more diversity
         )
         time_end = time.time()
         
