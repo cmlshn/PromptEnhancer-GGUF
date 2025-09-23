@@ -53,6 +53,7 @@ Hunyuan-PromptEnhancer is a prompt rewriting utility. It restructures an input p
 - Configurable inference parameters (temperature, top_p, max_new_tokens) for balancing determinism and diversity.
 
 ## 🔥🔥🔥Updates
+- [2025-09-22] 🚀 Added **GGUF model support** for efficient inference with quantized models!
 - [2025-09-18] ✨ Try the [PromptEnhancer-32B](https://huggingface.co/PromptEnhancer/PromptEnhancer-32B) for higher-quality prompt enhancement!
 - [2025-09-16] Release [T2I-Keypoints-Eval dataset](https://huggingface.co/datasets/PromptEnhancer/T2I-Keypoints-Eval).
 - [2025-09-07] Release [PromptEnhancer-7B model](https://huggingface.co/tencent/HunyuanImage-2.1/tree/main/reprompt).
@@ -60,20 +61,44 @@ Hunyuan-PromptEnhancer is a prompt rewriting utility. It restructures an input p
 
 ## Installation
 
+### Standard Installation (Transformers)
 ```bash
 pip install -r requirements.txt
 ```
 
+### GGUF Installation (Quantized Models)
+```bash
+# Install with CUDA support for faster inference
+chmod +x install_gguf.sh
+./install_gguf.sh
+```
+
 ## Model Download
 
+### Standard Models
 ```bash
 # for PromptEnhancer-7B model
 huggingface-cli download tencent/HunyuanImage-2.1/reprompt --local-dir ./models/promptenhancer-7b
+
+# for PromptEnhancer-32B model
+huggingface-cli download PromptEnhancer/PromptEnhancer-32B --local-dir ./models/promptenhancer-32b
+```
+
+### GGUF Models (Quantized)
+```bash
+# Download Q8_0 quantized model (35GB, highest quality)
+huggingface-cli download mradermacher/PromptEnhancer-32B-GGUF PromptEnhancer-32B.Q8_0.gguf --local-dir ./models
+
+# Download Q6_K quantized model (27GB, excellent quality)
+huggingface-cli download mradermacher/PromptEnhancer-32B-GGUF PromptEnhancer-32B.Q6_K.gguf --local-dir ./models
+
+# Download Q4_K_M quantized model (20GB, good quality)
+huggingface-cli download mradermacher/PromptEnhancer-32B-GGUF PromptEnhancer-32B.Q4_K_M.gguf --local-dir ./models
 ```
 
 ## Quickstart
 
-### Using HunyuanPromptEnhancer
+### Using Standard Models (Transformers)
 
 ```python
 from inference.prompt_enhancer import HunyuanPromptEnhancer
@@ -95,8 +120,58 @@ new_prompt = enhancer.predict(
 print("Enhanced:", new_prompt)
 ```
 
+### Using GGUF Models (Quantized, Faster)
+
+```python
+from inference.prompt_enhancer_gguf import PromptEnhancerGGUF
+
+# Auto-detects Q8_0 model in models/ folder
+enhancer = PromptEnhancerGGUF(
+    model_path="./models/PromptEnhancer-32B.Q8_0.gguf",  # Optional: auto-detected
+    n_ctx=1024,        # Context window size
+    n_gpu_layers=-1,   # Use all GPU layers
+)
+
+# Enhance a prompt
+user_prompt = "woman in jungle"
+enhanced_prompt = enhancer.predict(
+    user_prompt,
+    temperature=0.3,
+    top_p=0.9,
+    max_new_tokens=512,
+)
+
+print("Enhanced:", enhanced_prompt)
+```
+
+### Command Line Usage (GGUF)
+
+```bash
+# Simple usage - auto-detects model in models/ folder
+python inference/prompt_enhancer_gguf.py
+
+# Or specify model path
+GGUF_MODEL_PATH="./models/PromptEnhancer-32B.Q8_0.gguf" python inference/prompt_enhancer_gguf.py
+```
+
+## GGUF Model Benefits
+
+🚀 **Why use GGUF models?**
+- **Memory Efficient**: 50-75% less VRAM usage compared to full precision models
+- **Faster Inference**: Optimized for CPU and GPU acceleration with llama.cpp
+- **Quality Preserved**: Q8_0 and Q6_K maintain excellent output quality
+- **Easy Deployment**: Single file format, no complex dependencies
+- **GPU Acceleration**: Full CUDA support for high-performance inference
+
+| Model | Size | Quality | VRAM Usage | Best For |
+|-------|------|---------|------------|----------|
+| Q8_0  | 35GB | Highest | ~35GB      | High-end GPUs (H100, A100) |
+| Q6_K  | 27GB | Excellent | ~27GB     | RTX 4090, RTX 5090 |
+| Q4_K_M| 20GB | Good    | ~20GB      | RTX 3090, RTX 4080 |
+
 ## Parameters
 
+### Standard Models (Transformers)
 - `models_root_path`: Local path or repo id; supports `trust_remote_code` models.
 - `device_map`: Device mapping (default `auto`).
 - `predict(...)`:
@@ -105,6 +180,12 @@ print("Enhanced:", new_prompt)
   - `temperature` (float): `>0` enables sampling; `0` for deterministic generation.
   - `top_p` (float): Nucleus sampling threshold (effective when sampling).
   - `max_new_tokens` (int): Maximum number of new tokens to generate.
+
+### GGUF Models
+- `model_path` (str): Path to GGUF model file (auto-detected if in models/ folder).
+- `n_ctx` (int): Context window size (default: 8192, recommended: 1024 for short prompts).
+- `n_gpu_layers` (int): Number of layers to offload to GPU (-1 for all layers).
+- `verbose` (bool): Enable verbose logging from llama.cpp.
 
 ## Citation
 
