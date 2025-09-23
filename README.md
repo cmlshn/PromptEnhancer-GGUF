@@ -60,42 +60,73 @@ Hunyuan-PromptEnhancer is a prompt rewriting utility. It restructures an input p
 - [2025-09-07] Release [PromptEnhancer-7B model](https://huggingface.co/tencent/HunyuanImage-2.1/tree/main/reprompt).
 - [2025-09-07] Release [technical report](https://arxiv.org/abs/2509.04545).
 
+## Prerequisites
+
+- **Python**: 3.8 or higher
+- **CUDA**: 11.8+ (recommended for GPU acceleration)
+- **Storage**: At least 20GB free space for models
+- **Memory**: 8GB+ RAM (16GB+ recommended for 32B models)
+
 ## Installation
 
-### Standard Installation (Transformers)
+### Option 1: Standard Installation (Recommended for most users)
 ```bash
 pip install -r requirements.txt
 ```
 
-### GGUF Installation (Quantized Models)
+### Option 2: GGUF Installation (For quantized models with CUDA support)
 ```bash
-# Install with CUDA support for faster inference
-chmod +x install_gguf.sh
-./install_gguf.sh
+chmod +x script/install_gguf.sh && ./script/install_gguf.sh
 ```
+
+> **💡 Tip**: Choose GGUF installation if you want faster inference with lower memory usage, especially for the 32B model.
 
 ## Model Download
 
-### Standard Models
+### 🎯 Quick Start (Recommended)
+For most users, we recommend starting with the **PromptEnhancer-7B** model:
+
 ```bash
-# for PromptEnhancer-7B model
+# Download PromptEnhancer-7B (13GB) - Best balance of quality and efficiency
+huggingface-cli download tencent/HunyuanImage-2.1/reprompt --local-dir ./models/promptenhancer-7b
+```
+
+### 📊 Model Comparison & Selection Guide
+
+| Model | Size | Quality | Memory | Best For |
+|-------|------|---------|--------|----------|
+| **PromptEnhancer-7B** | 13GB | High | 8GB+ | Most users, balanced performance |
+| **PromptEnhancer-32B** | 64GB | Highest | 32GB+ | Research, highest quality needs |
+| **32B-Q8_0 (GGUF)** | 35GB | Highest | 35GB+ | High-end GPUs (H100, A100) |
+| **32B-Q6_K (GGUF)** | 27GB | Excellent | 27GB+ | RTX 4090, RTX 5090 |
+| **32B-Q4_K_M (GGUF)** | 20GB | Good | 20GB+ | RTX 3090, RTX 4080 |
+
+### Standard Models (Full Precision)
+```bash
+# PromptEnhancer-7B (recommended for most users)
 huggingface-cli download tencent/HunyuanImage-2.1/reprompt --local-dir ./models/promptenhancer-7b
 
-# for PromptEnhancer-32B model
+# PromptEnhancer-32B (for highest quality)
 huggingface-cli download PromptEnhancer/PromptEnhancer-32B --local-dir ./models/promptenhancer-32b
 ```
 
-### GGUF Models (Quantized)
+### GGUF Models (Quantized - Memory Efficient)
 ```bash
-# Download Q8_0 quantized model (35GB, highest quality)
+# Create models directory
+mkdir -p ./models
+
+# Choose one based on your GPU memory:
+# Q8_0: Highest quality (35GB)
 huggingface-cli download mradermacher/PromptEnhancer-32B-GGUF PromptEnhancer-32B.Q8_0.gguf --local-dir ./models
 
-# Download Q6_K quantized model (27GB, excellent quality)
+# Q6_K: Excellent quality (27GB) - Recommended for RTX 4090
 huggingface-cli download mradermacher/PromptEnhancer-32B-GGUF PromptEnhancer-32B.Q6_K.gguf --local-dir ./models
 
-# Download Q4_K_M quantized model (20GB, good quality)
+# Q4_K_M: Good quality (20GB) - Recommended for RTX 3090/4080
 huggingface-cli download mradermacher/PromptEnhancer-32B-GGUF PromptEnhancer-32B.Q4_K_M.gguf --local-dir ./models
 ```
+
+> **🚀 Performance Tip**: GGUF models offer 50-75% memory reduction with minimal quality loss. Use Q6_K for the best quality/memory trade-off.
 
 ## Quickstart
 
